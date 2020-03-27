@@ -8,6 +8,8 @@ public class HexTileMapGenerator : MonoBehaviour
 {
 
     public GameObject hexTilePrefab;
+    public GameObject baseHexObj;
+    public GameObject spawnHexObj;
     public Dictionary<string, GameObject> TileBaseDic = new Dictionary<string, GameObject>();
     public Dictionary<string, GameObject> TileSpawnDic = new Dictionary<string, GameObject>();
 
@@ -22,9 +24,27 @@ public class HexTileMapGenerator : MonoBehaviour
     void Start()
     {
         CreateHexTileMap();
-        BaseCreation(TileBaseDic);
-        SpawnCreation(TileSpawnDic);
+        baseHexObj = BaseCreation(TileBaseDic);
+        spawnHexObj = SpawnCreation(TileSpawnDic);
+        Path Chemin = new Path();
 
+        int mapXStart = (mapWidth / 2);
+        int mapYStart = (mapHeight / 2);
+
+        string[] baseHexStringA = SplitObjectName(baseHexObj);
+        string[] spawnHexStringA = SplitObjectName(spawnHexObj);
+
+        var mynewpathh = Chemin.GenerateRandomPath(Convert.ToInt32(spawnHexStringA[0]), Convert.ToInt32(spawnHexStringA[1]), Convert.ToInt32(baseHexStringA[0]), Convert.ToInt32(baseHexStringA[1]), 0.3,-mapWidth, mapWidth);
+        //Debug.Log(spawnHexStringA[0].ToString()+","+spawnHexStringA[1].ToString());
+        //Debug.Log(baseHexStringA[0].ToString()+","+baseHexStringA[1].ToString());
+
+    }
+
+    public string[] SplitObjectName(GameObject Obj)
+    {
+        string[] splitArray;
+        return splitArray = Obj.name.Split(char.Parse(",")); //Here we assing the splitted string to array by that char
+        //name = splitArray[0]; //Here we assign the first part to the name
     }
 
     // Instantiate : HexTiles & Memorise les #ID des Tiles Base et Spawn éligibles
@@ -80,12 +100,14 @@ public class HexTileMapGenerator : MonoBehaviour
         }*/
     }
 
-    public void BaseCreation(Dictionary<string, GameObject> TileBaseDic)
+    public GameObject BaseCreation(Dictionary<string, GameObject> TileBaseDic)
     {
         // Get Desired Tile
         string randomKey = TileBaseDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
         GameObject randomObjectFromDictionary = TileBaseDic[randomKey];
-        SetTileBase(randomObjectFromDictionary);         
+        SetTileBase(randomObjectFromDictionary);
+
+        return randomObjectFromDictionary;
     }
 
     void SetTileBase(GameObject Base)
@@ -97,12 +119,14 @@ public class HexTileMapGenerator : MonoBehaviour
         TileRenderer.material.SetColor("_Color", Color.green);
     }
 
-    public void SpawnCreation(Dictionary<string, GameObject> TileSpawnDic)
+    public GameObject SpawnCreation(Dictionary<string, GameObject> TileSpawnDic)
     {
         // Get Desired Tile
         string randomKey = TileSpawnDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
         GameObject randomObjectFromDictionary = TileSpawnDic[randomKey];
         SetTileSpawn(randomObjectFromDictionary);
+
+        return randomObjectFromDictionary;
     }
 
     void SetTileSpawn(GameObject Spawn)
