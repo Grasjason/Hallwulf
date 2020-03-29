@@ -13,6 +13,7 @@ public class GridBehavior : MonoBehaviour
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
+    public GameObject DesiredBase;
     public int startX = 0;
     public int startY = 0;
     public int endX = 2;
@@ -29,7 +30,11 @@ public class GridBehavior : MonoBehaviour
     {
         gridArray = new GameObject[columns, rows];
         if (hexPrefab)
+        {
             GenerateGrid();
+            SetBasable(gridArray);
+            SetBaseHexTile();
+        }            
         else print("Assigner une hexPrefab qui servira de Grille au sol.");
     }
 
@@ -83,6 +88,46 @@ public class GridBehavior : MonoBehaviour
                 SetTileInfo(Obj, i, j);
 
                 gridArray[i, j] = Obj;
+            }
+        }
+    }
+    public void SetBasable(GameObject[,] gridSetBasable)
+    {
+        // Correspond a une ligne pour une Base a 5% de la bordure Basse Arrondi au supérieur pour gérer les superficies Impair
+        int baseLimit = (int)System.Math.Floor(rows * 0.05);
+        int spawnLimit = (int)System.Math.Floor(columns * 0.05);
+
+        for (int l = 1; l < rows * columns; l++)
+        {
+            //Pour chaque objet
+            foreach (GameObject Obj in gridSetBasable)
+            {
+                //Si la position de l'objet convient au filtre 5% du bas et 5 % des bords
+                if (Obj && Obj.GetComponent<GridStats>().y == baseLimit && Obj.GetComponent<GridStats>().x >= spawnLimit && Obj.GetComponent<GridStats>().x <= (columns - spawnLimit))
+                {
+                    //Turn into Basable
+                    Obj.GetComponent<GridStats>().basable = 1;
+                }
+            }
+        }
+        //string randomKey = TileBaseDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
+        //GameObject randomObjectFromDictionary = TileBaseDic[randomKey];
+
+    }
+    void SetBaseHexTile()
+    {
+        // Pour mon nombre d'éléments dans ma grille
+        for (int l = 1; l < rows * columns; l++)
+        {
+            //Pour chaque objet
+            foreach (GameObject Obj in gridArray)
+            {
+                //Si Obj existe && est eligible pour une base 
+                if (Obj && Obj.GetComponent<GridStats>().basable == 1)
+                {
+                    //Turn into Base
+                    Obj.GetComponent<GridStats>().ConvertToBase();
+                }
             }
         }
     }
@@ -169,9 +214,15 @@ public class GridBehavior : MonoBehaviour
         // Pour chaque objet on le tag a Visited = -1 sauf le start a 0
         foreach (GameObject Obj in gridArray)
         {
-            if(Obj)
-            Obj.GetComponent<GridStats>().visited = -1;
-            gridArray[startX, startY].GetComponent<GridStats>().visited = 0;
+            if (Obj)
+            {
+                    // On initialise tt les items Non visités
+                    Obj.GetComponent<GridStats>().visited = -1;
+                    // On initialise tt les items Non eligible a une Base
+                    Obj.GetComponent<GridStats>().basable = 0;
+            }
+                // On initialise le Start comme visité et connu
+                gridArray[startX, startY].GetComponent<GridStats>().visited = 0;
         }
     }
 
