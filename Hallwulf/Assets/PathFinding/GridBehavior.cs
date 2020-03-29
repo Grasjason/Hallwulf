@@ -5,15 +5,15 @@ using UnityEngine;
 public class GridBehavior : MonoBehaviour
 {
     public bool findDistance = false;
-    public int rows = 10;
-    public int columns = 10;
+    public int rows = 40;
+    public int columns = 40;
     public int scale = 1;
 
     public GameObject hexPrefab;
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
-    public GameObject DesiredBase;
+    //public GameObject DesiredBase;
     public int startX = 0;
     public int startY = 0;
     public int endX = 2;
@@ -55,26 +55,23 @@ public class GridBehavior : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                GameObject Obj = new GameObject();
-                Obj = Instantiate(hexPrefab);
+                GameObject Object = Instantiate(hexPrefab);
 
                 if (j % 2 == 0)
                 {
-                    Obj.transform.position = new Vector3(i * tileXOffset, leftBottomLocation.y, j * tileZOffset);
+                    Object.transform.position = new Vector3(i * tileXOffset, leftBottomLocation.y, j * tileZOffset);
                 }
                 else
                 {
-                    Obj.transform.position = new Vector3(i * tileXOffset + tileXOffset / 2, leftBottomLocation.y, j * tileZOffset);
+                    Object.transform.position = new Vector3(i * tileXOffset + tileXOffset / 2, leftBottomLocation.y, j * tileZOffset);
                 }
+                SetTileInfo(Object, i, j);
+                Object.transform.SetParent(gameObject.transform);
 
-                Obj.transform.SetParent(gameObject.transform);
+                Object.GetComponent<GridStats>().x = i;
+                Object.GetComponent<GridStats>().y = j;                
 
-                Obj.GetComponent<GridStats>().x = i;
-                Obj.GetComponent<GridStats>().y = j;
-
-                SetTileInfo(Obj, i, j);
-
-                gridArray[i, j] = Obj;
+                gridArray[i, j] = Object;
             }
         }
     }
