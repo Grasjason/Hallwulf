@@ -26,10 +26,12 @@ public class HexTileMapGenerator : MonoBehaviour
         CreateHexTileMap();
         baseHexObj = BaseCreation(TileBaseDic);
         spawnHexObj = SpawnCreation(TileSpawnDic);
+        
+        // Génère le Chemin aléatoire entre Base et Spawn
         Path Chemin = new Path();
 
         int mapXStart = (mapWidth / 2);
-        int mapYStart = (mapHeight / 2);
+        //int mapYStart = (mapHeight / 2);
 
         string[] baseHexStringA = SplitObjectName(baseHexObj);
         string[] spawnHexStringA = SplitObjectName(spawnHexObj);
@@ -38,8 +40,63 @@ public class HexTileMapGenerator : MonoBehaviour
         //Debug.Log(spawnHexStringA[0].ToString()+","+spawnHexStringA[1].ToString());
         //Debug.Log(baseHexStringA[0].ToString()+","+baseHexStringA[1].ToString());
 
+        DrawTheRoad(mynewpathh, Convert.ToInt32(spawnHexStringA[0]), Convert.ToInt32(spawnHexStringA[1]), Convert.ToInt32(baseHexStringA[0]), Convert.ToInt32(baseHexStringA[1]));
+
     }
 
+    public void DrawTheRoad(Path RoadPath,int SpawnX, int SpawnY, int BaseX, int BaseY)
+    {
+        for (int i = 0; i < RoadPath.Count; i++)
+        {
+            foreach (Direction item in RoadPath)
+            {
+                
+                    switch (item)
+                    {
+                        case Direction.Left:
+                            SpawnX--;
+                            if (!(SpawnX == BaseX && SpawnY == BaseY))
+                            {
+                                ConvertToRoad(SearchObjByPos(SpawnX, SpawnY));
+                                Debug.Log("Left : X--" + " ("+SpawnX + "," + SpawnY + ")");
+                            }
+                            break;
+                        case Direction.Right:
+                            SpawnX++;
+                            if (!(SpawnX == BaseX && SpawnY == BaseY))
+                            {
+                                ConvertToRoad(SearchObjByPos(SpawnX, SpawnY));
+                                Debug.Log("Right : X++" + " (" + SpawnX + "," + SpawnY + ")");
+                            }
+                            break;
+                        case Direction.Down:
+                            SpawnY--;
+                            if (!(SpawnX == BaseX && SpawnY == BaseY))
+                            {
+                                ConvertToRoad(SearchObjByPos(SpawnX, SpawnY));
+                                Debug.Log("Down : Y--" + " (" + SpawnX + "," + SpawnY + ")");
+                            }
+                            break;
+                    }
+                
+            }
+        }
+    }
+
+    //Recherche un objet en fonction de sa position
+    public GameObject SearchObjByPos(int x, int y)
+    {
+        return GameObject.Find(x+","+y);
+    }
+
+    //Met a jour un objet pour qu'il devienne une route.
+    public void ConvertToRoad(GameObject Obj)
+    {
+        var TileRenderer = Obj.GetComponent<Renderer>();
+        TileRenderer.material.SetColor("_Color", Color.yellow);
+    }
+
+    //Récupére la position sous forme de string[] d'un objet en paramètre
     public string[] SplitObjectName(GameObject Obj)
     {
         string[] splitArray;

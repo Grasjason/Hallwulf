@@ -44,8 +44,8 @@ public class Path : List<Direction> {
                 {
                     if (cury == endy && curx < endx) newd = Direction.Right;
                     else if (cury == endy && curx > endx) newd = Direction.Left;
-                    else if (curx <= minXLimit) newd = GetNewDirection(Direction.Right | Direction.Down, rnd);
-                    else if (curx >= maxXLimit) newd = GetNewDirection(Direction.Left | Direction.Down, rnd);
+                    else if (curx <= minXLimit) newd = Direction.Right; //GetNewDirection(Direction.Right | Direction.Down, rnd);
+                    else if (curx >= maxXLimit) newd = Direction.Left; //GetNewDirection(Direction.Left | Direction.Down, rnd);
                     else newd = GetNewDirection(Direction.Right | Direction.Down | Direction.Left, rnd);
 
                 }
