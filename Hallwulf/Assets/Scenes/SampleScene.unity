@@ -324,16 +324,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   findDistance: 0
-  rows: 10
-  columns: 10
+  rows: 3
+  columns: 3
   scale: 2
   hexPrefab: {fileID: 5068774730981186919, guid: 09f97afc2574a8c4fada1c6a065cfa55,
     type: 3}
   leftBottomLocation: {x: 0, y: 0, z: 0}
   startX: 0
   startY: 0
-  endX: 5
-  endY: 5
+  endX: 2
+  endY: 2
   path: []
 --- !u!4 &1944576185
 Transform:

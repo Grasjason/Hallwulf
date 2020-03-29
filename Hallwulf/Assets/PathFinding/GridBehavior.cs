@@ -68,14 +68,19 @@ public class GridBehavior : MonoBehaviour
 
     void SetDistance()
     {
+        // Pour chaque objet on le tag a Visited = -1 sauf le start a 0
         InitialSetUp();
+
         int x = startX;
         int y = startY;
         int[] testArray = new int[rows * columns];
+        // Pour mon nombre d'éléments dans ma grille
         for (int step = 0; step < rows*columns; step++)
         {
+            //Pour chaque objet
             foreach (GameObject Obj in gridArray)
             {
+                //Si Obj existe && visited  == 
                 if (Obj && Obj.GetComponent<GridStats>().visited == step - 1)
                     TestFourDirections(Obj.GetComponent<GridStats>().x, Obj.GetComponent<GridStats>().y, step);
             }
@@ -91,7 +96,7 @@ public class GridBehavior : MonoBehaviour
         path.Clear();
 
         // Si mon objet ciblé dans ma table d'objet Existe && si mon champ visited > 0 (if negative = Solution FOund)
-        if (gridArray[endX,endY] && gridArray[endX, endY].GetComponent<GridStats>().visited > 0) //
+        if (gridArray[endX, endY] && gridArray[endX, endY].GetComponent<GridStats>().visited > 0) 
         {
             path.Add(gridArray[x, y]);
             step = gridArray[x, y].GetComponent<GridStats>().visited - 1;
@@ -143,6 +148,7 @@ public class GridBehavior : MonoBehaviour
     }
 
     // Fonction qui test chacune des direction possibles (1=UP; 2=RIGHT; 3=DOWN; 4=LEFT)
+    // Si Visited = -1 alors TestDirection = True
     bool TestDirection(int x, int y, int step, int direction)
     {
         switch (direction)
