@@ -32,8 +32,8 @@ public class GridBehavior : MonoBehaviour
         if (hexPrefab)
         {
             GenerateGrid();
-            SetBasable(gridArray);
-            SetBaseHexTile();
+            SetBasableAndSpawnable(gridArray);
+            SetBaseAndSpawnHexTile();
         }            
         else print("Assigner une hexPrefab qui servira de Grille au sol.");
     }
@@ -91,11 +91,13 @@ public class GridBehavior : MonoBehaviour
             }
         }
     }
-    public void SetBasable(GameObject[,] gridSetBasable)
+    public void SetBasableAndSpawnable(GameObject[,] gridSetBasable)
     {
         // Correspond a une ligne pour une Base a 5% de la bordure Basse Arrondi au supérieur pour gérer les superficies Impair
-        int baseLimit = (int)System.Math.Floor(rows * 0.05);
-        int spawnLimit = (int)System.Math.Floor(columns * 0.05);
+        int baseYLimit = (int)System.Math.Floor(rows * 0.05);
+        int XLimit = (int)System.Math.Floor(columns * 0.05);
+        int spawnYLimit = (int)System.Math.Floor(rows - (rows * 0.05));
+
 
         for (int l = 1; l < rows * columns; l++)
         {
@@ -103,10 +105,15 @@ public class GridBehavior : MonoBehaviour
             foreach (GameObject Obj in gridSetBasable)
             {
                 //Si la position de l'objet convient au filtre 5% du bas et 5 % des bords
-                if (Obj && Obj.GetComponent<GridStats>().y == baseLimit && Obj.GetComponent<GridStats>().x >= spawnLimit && Obj.GetComponent<GridStats>().x <= (columns - spawnLimit))
+                if (Obj && Obj.GetComponent<GridStats>().y == baseYLimit && Obj.GetComponent<GridStats>().x >= XLimit && Obj.GetComponent<GridStats>().x <= (columns - XLimit))
                 {
                     //Turn into Basable
                     Obj.GetComponent<GridStats>().basable = 1;
+                }
+                if (Obj && Obj.GetComponent<GridStats>().y == spawnYLimit && Obj.GetComponent<GridStats>().x >= XLimit && Obj.GetComponent<GridStats>().x <= (columns - XLimit))
+                {
+                    //Turn into Basable
+                    Obj.GetComponent<GridStats>().spawnable = 1;
                 }
             }
         }
@@ -114,7 +121,7 @@ public class GridBehavior : MonoBehaviour
         //GameObject randomObjectFromDictionary = TileBaseDic[randomKey];
 
     }
-    void SetBaseHexTile()
+    void SetBaseAndSpawnHexTile()
     {
         // Pour mon nombre d'éléments dans ma grille
         for (int l = 1; l < rows * columns; l++)
@@ -127,6 +134,11 @@ public class GridBehavior : MonoBehaviour
                 {
                     //Turn into Base
                     Obj.GetComponent<GridStats>().ConvertToBase();
+                }
+                if (Obj && Obj.GetComponent<GridStats>().spawnable == 1)
+                {
+                    //Turn into Base
+                    Obj.GetComponent<GridStats>().ConvertToSpawn();
                 }
             }
         }
@@ -220,6 +232,8 @@ public class GridBehavior : MonoBehaviour
                     Obj.GetComponent<GridStats>().visited = -1;
                     // On initialise tt les items Non eligible a une Base
                     Obj.GetComponent<GridStats>().basable = 0;
+                    // On initialise tt les items Non eligible a un Spawn
+                    Obj.GetComponent<GridStats>().spawnable = 0;
             }
                 // On initialise le Start comme visité et connu
                 gridArray[startX, startY].GetComponent<GridStats>().visited = 0;

@@ -9,7 +9,8 @@ public class GridStats : MonoBehaviour
     public int x = 0;
     public int y = 0;
     public int basable;
-    
+    public int spawnable;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,48 +32,12 @@ public class GridStats : MonoBehaviour
         TileRenderer.material.SetColor("_Color", Color.green);
     }
 
-    /*// the private variable for the class
-    private int x;
-
-    // public getter and setter for other classes to use
-    public int x
+    public void ConvertToSpawn()
     {
-        get
-        {
-            return this.x;
-        }
-        set
-        {
-            // include any checks you want to take place in here before setting the value
-            x = value;
-        }
-    }
+        //Get the Renderer component from the new cube
+        var TileRenderer = this.GetComponent<Renderer>();
 
-    private int y;
-    public int y
-    {
-        get
-        {
-            return this.y;
-        }
-        set
-        {
-            // include any checks you want to take place in here before setting the value
-            y = value;
-        }
-    }
-
-    private int visited;
-    public int visited
-    {
-        get
-        {
-            return this.visited;
-        }
-        set
-        {
-            // include any checks you want to take place in here before setting the value
-            visited = value;
-        }
-    }*/
+        //Call SetColor using the shader property name "_Color" and setting the color to red
+        TileRenderer.material.SetColor("_Color", Color.red);
+    }    
 }
