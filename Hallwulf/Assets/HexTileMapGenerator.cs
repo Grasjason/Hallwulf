@@ -10,8 +10,8 @@ public class HexTileMapGenerator : MonoBehaviour
     public GameObject hexTilePrefab;
     public GameObject baseHexObj;
     public GameObject spawnHexObj;
-    public Dictionary<string, GameObject> TileBaseDic = new Dictionary<string, GameObject>();
-    public Dictionary<string, GameObject> TileSpawnDic = new Dictionary<string, GameObject>();
+    //public Dictionary<string, int[,]> TileBaseDic = new Dictionary<string, GameObject>();
+    //public Dictionary<string, int[,]> TileSpawnDic = new Dictionary<string, GameObject>();
 
     [SerializeField] int mapWidth = 50;
     [SerializeField] int mapHeight = 50;
@@ -24,8 +24,8 @@ public class HexTileMapGenerator : MonoBehaviour
     void Start()
     {
         CreateHexTileMap();
-        baseHexObj = BaseCreation(TileBaseDic);
-        spawnHexObj = SpawnCreation(TileSpawnDic);
+        //baseHexObj = BaseCreation(TileBaseDic);
+        //spawnHexObj = SpawnCreation(TileSpawnDic);
         
         // Génère le Chemin aléatoire entre Base et Spawn
         Path Chemin = new Path();
@@ -136,7 +136,7 @@ public class HexTileMapGenerator : MonoBehaviour
                 {
                     if (x <= spawnLimit && x >= -spawnLimit)
                     {
-                        TileBaseDic.Add(TempGo.name, TempGo);
+                        //TileBaseDic.Add(TempGo.name, TempGo);
                     }
                 }
                 // Correspond a une ligne pour un Spawn a 5% de la bordure Haute Arrondi au supérieur pour gérer les superficies Impair
@@ -145,7 +145,7 @@ public class HexTileMapGenerator : MonoBehaviour
                 {
                     if (x <= spawnLimit && x >= -spawnLimit)
                     {
-                        TileSpawnDic.Add(TempGo.name, TempGo);
+                        //TileSpawnDic.Add(TempGo.name, TempGo);
                     }
                 }
             }
@@ -176,15 +176,15 @@ public class HexTileMapGenerator : MonoBehaviour
         TileRenderer.material.SetColor("_Color", Color.green);
     }
 
-    public GameObject SpawnCreation(Dictionary<string, GameObject> TileSpawnDic)
+    /*public GameObject SpawnCreation(Dictionary<string, GameObject> TileSpawnDic)
     {
         // Get Desired Tile
-        string randomKey = TileSpawnDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
-        GameObject randomObjectFromDictionary = TileSpawnDic[randomKey];
-        SetTileSpawn(randomObjectFromDictionary);
+        //string randomKey = TileSpawnDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
+        //GameObject randomObjectFromDictionary = TileSpawnDic[randomKey];
+        //SetTileSpawn(randomObjectFromDictionary);
 
-        return randomObjectFromDictionary;
-    }
+        //return randomObjectFromDictionary;
+    }*/
 
     void SetTileSpawn(GameObject Spawn)
     {

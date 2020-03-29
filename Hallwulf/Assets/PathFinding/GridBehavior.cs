@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,9 @@ public class GridBehavior : MonoBehaviour
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
-    //public GameObject DesiredBase;
+    public List<GameObject> baseList = new List<GameObject>();
+    public List<GameObject> spawnList = new List<GameObject>();
+
     public int startX = 0;
     public int startY = 0;
     public int endX = 2;
@@ -33,6 +36,7 @@ public class GridBehavior : MonoBehaviour
         {
             GenerateGrid();
             SetBasableAndSpawnable(gridArray);
+            ConvertToBaseAndSpawn();
         }            
         else print("Assigner une hexPrefab qui servira de Grille au sol.");
     }
@@ -84,7 +88,6 @@ public class GridBehavior : MonoBehaviour
         int XLimit = (int)System.Math.Floor(columns * 0.05);
         int spawnYLimit = (int)System.Math.Floor(rows - (rows * 0.05));
 
-
         for (int l = 1; l < rows * columns; l++)
         {
             //Pour chaque objet
@@ -95,18 +98,40 @@ public class GridBehavior : MonoBehaviour
                 {
                     //Turn into Basable
                     Obj.GetComponent<GridStats>().basable = 1;
-                    //Turn into Base
-                    Obj.GetComponent<GridStats>().ConvertToBase();
+                    baseList.Add(Obj);
                 }
                 if (Obj && Obj.GetComponent<GridStats>().y == spawnYLimit && Obj.GetComponent<GridStats>().x >= XLimit && Obj.GetComponent<GridStats>().x <= (columns - XLimit))
                 {
                     //Turn into Basable
                     Obj.GetComponent<GridStats>().spawnable = 1;
-                    //Turn into Base
-                    Obj.GetComponent<GridStats>().ConvertToSpawn();
+                    spawnList.Add(Obj);
                 }
             }
         }
+    }
+
+    void ConvertToBaseAndSpawn()
+    {
+
+        GameObject localBaseObject = baseList[UnityEngine.Random.Range(0, baseList.Count)];
+        GameObject localSpawnObject = spawnList[UnityEngine.Random.Range(0, spawnList.Count)];
+
+        for (int l = 1; l < rows * columns; l++)
+        {
+            //Pour chaque objet
+            foreach (GameObject Obj in gridArray)
+            {
+
+                if (Obj && Obj.GetComponent<GridStats>().spawnable == 1 && Obj.GetComponent<GridStats>().x == localSpawnObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localSpawnObject.GetComponent<GridStats>().y)
+                {
+                    Obj.GetComponent<GridStats>().ConvertToSpawn();
+                }
+                if (Obj && Obj.GetComponent<GridStats>().basable == 1 && Obj.GetComponent<GridStats>().x == localBaseObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localBaseObject.GetComponent<GridStats>().y)
+                {
+                    Obj.GetComponent<GridStats>().ConvertToBase();
+                }
+            }
+        }  
     }
 
     void SetTileInfo(GameObject GO, int x, int z)
