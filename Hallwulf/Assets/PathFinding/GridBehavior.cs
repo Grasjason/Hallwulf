@@ -19,7 +19,7 @@ public class GridBehavior : MonoBehaviour
     public int endY = 2;
 
     // Permet d'assurer l'emboitage des Hexagones avec le bon décalage X,Z
-    float tileXOffset = 0.503f;
+    float tileXOffset = 1.0f;
     float tileZOffset = 0.864f;
 
     public List<GameObject> path = new List<GameObject>();
@@ -51,7 +51,30 @@ public class GridBehavior : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                GameObject Obj = (GameObject)Instantiate(hexPrefab, new Vector3(leftBottomLocation.x + scale * i,leftBottomLocation.y, leftBottomLocation.z + scale * j),Quaternion.identity);
+                // Code Original de https://www.youtube.com/watch?v=fUiNDDcU_I4
+                /*GameObject Obj = new GameObject();
+                 if (j % 2 == 0)
+                 {
+                     Obj = (GameObject)Instantiate(hexPrefab, new Vector3((leftBottomLocation.x + tileXOffset)  * i, leftBottomLocation.y, (leftBottomLocation.z + tileZOffset ) * j), Quaternion.identity);
+                 }
+                 else
+                 {
+                     Obj = (GameObject)Instantiate(hexPrefab, new Vector3((leftBottomLocation.x + tileXOffset + (tileXOffset / 2)) * i, leftBottomLocation.y, (leftBottomLocation.z + tileZOffset ) * j), Quaternion.identity);
+
+                 }*/
+
+                GameObject Obj = new GameObject();
+                Obj = Instantiate(hexPrefab);
+
+                if (j % 2 == 0)
+                {
+                    Obj.transform.position = new Vector3(i * tileXOffset, leftBottomLocation.y, j * tileZOffset);
+                }
+                else
+                {
+                    Obj.transform.position = new Vector3(i * tileXOffset + tileXOffset / 2, leftBottomLocation.y, j * tileZOffset);
+                }
+
                 Obj.transform.SetParent(gameObject.transform);
 
                 Obj.GetComponent<GridStats>().x = i;
@@ -190,7 +213,7 @@ public class GridBehavior : MonoBehaviour
 
     GameObject FindClosest(Transform targetLocation,List<GameObject> list)
     {
-        float currentDistance = scale * rows * columns;
+        float currentDistance = rows * columns; //Suppression du * Scale afin d'éviter que mon offset qui est <1 pose probléme 
         int indexNumber = 0;
         for (int i = 0; i < list.Count; i++)
         {
