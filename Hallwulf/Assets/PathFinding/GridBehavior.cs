@@ -18,6 +18,10 @@ public class GridBehavior : MonoBehaviour
     public int endX = 2;
     public int endY = 2;
 
+    // Permet d'assurer l'emboitage des Hexagones avec le bon décalage X,Z
+    float tileXOffset = 0.503f;
+    float tileZOffset = 0.864f;
+
     public List<GameObject> path = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -75,7 +79,7 @@ public class GridBehavior : MonoBehaviour
         int y = startY;
         int[] testArray = new int[rows * columns];
         // Pour mon nombre d'éléments dans ma grille
-        for (int step = 0; step < rows*columns; step++)
+        for (int step = 1; step < rows*columns; step++)
         {
             //Pour chaque objet
             foreach (GameObject Obj in gridArray)
@@ -142,6 +146,7 @@ public class GridBehavior : MonoBehaviour
         // Pour chaque objet on le tag a Visited = -1 sauf le start a 0
         foreach (GameObject Obj in gridArray)
         {
+            if(Obj)
             Obj.GetComponent<GridStats>().visited = -1;
             gridArray[startX, startY].GetComponent<GridStats>().visited = 0;
         }
