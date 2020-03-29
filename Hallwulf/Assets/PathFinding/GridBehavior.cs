@@ -33,7 +33,6 @@ public class GridBehavior : MonoBehaviour
         {
             GenerateGrid();
             SetBasableAndSpawnable(gridArray);
-            SetBaseAndSpawnHexTile();
         }            
         else print("Assigner une hexPrefab qui servira de Grille au sol.");
     }
@@ -56,18 +55,6 @@ public class GridBehavior : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                // Code Original de https://www.youtube.com/watch?v=fUiNDDcU_I4
-                /*GameObject Obj = new GameObject();
-                 if (j % 2 == 0)
-                 {
-                     Obj = (GameObject)Instantiate(hexPrefab, new Vector3((leftBottomLocation.x + tileXOffset)  * i, leftBottomLocation.y, (leftBottomLocation.z + tileZOffset ) * j), Quaternion.identity);
-                 }
-                 else
-                 {
-                     Obj = (GameObject)Instantiate(hexPrefab, new Vector3((leftBottomLocation.x + tileXOffset + (tileXOffset / 2)) * i, leftBottomLocation.y, (leftBottomLocation.z + tileZOffset ) * j), Quaternion.identity);
-
-                 }*/
-
                 GameObject Obj = new GameObject();
                 Obj = Instantiate(hexPrefab);
 
@@ -91,6 +78,8 @@ public class GridBehavior : MonoBehaviour
             }
         }
     }
+
+    // Dans le cas ou la case répond au besoins de placement d'un Spawn ou Bas alors on set sa variable Basable ou Spawnable a 1.
     public void SetBasableAndSpawnable(GameObject[,] gridSetBasable)
     {
         // Correspond a une ligne pour une Base a 5% de la bordure Basse Arrondi au supérieur pour gérer les superficies Impair
@@ -109,34 +98,13 @@ public class GridBehavior : MonoBehaviour
                 {
                     //Turn into Basable
                     Obj.GetComponent<GridStats>().basable = 1;
+                    //Turn into Base
+                    Obj.GetComponent<GridStats>().ConvertToBase();
                 }
                 if (Obj && Obj.GetComponent<GridStats>().y == spawnYLimit && Obj.GetComponent<GridStats>().x >= XLimit && Obj.GetComponent<GridStats>().x <= (columns - XLimit))
                 {
                     //Turn into Basable
                     Obj.GetComponent<GridStats>().spawnable = 1;
-                }
-            }
-        }
-        //string randomKey = TileBaseDic.Keys.ToArray()[(int)UnityEngine.Random.Range(0, TileBaseDic.Keys.Count - 1)];
-        //GameObject randomObjectFromDictionary = TileBaseDic[randomKey];
-
-    }
-    void SetBaseAndSpawnHexTile()
-    {
-        // Pour mon nombre d'éléments dans ma grille
-        for (int l = 1; l < rows * columns; l++)
-        {
-            //Pour chaque objet
-            foreach (GameObject Obj in gridArray)
-            {
-                //Si Obj existe && est eligible pour une base 
-                if (Obj && Obj.GetComponent<GridStats>().basable == 1)
-                {
-                    //Turn into Base
-                    Obj.GetComponent<GridStats>().ConvertToBase();
-                }
-                if (Obj && Obj.GetComponent<GridStats>().spawnable == 1)
-                {
                     //Turn into Base
                     Obj.GetComponent<GridStats>().ConvertToSpawn();
                 }
