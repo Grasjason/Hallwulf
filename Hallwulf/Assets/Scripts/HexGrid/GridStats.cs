@@ -64,4 +64,26 @@ public class GridStats : MonoBehaviour
         }
 
     }
+    public void SwitchTileToSpawn(dSpawn hexSpawn)
+    {
+        if (hexSpawn)
+        {
+            GameObject hexBaseGo = Instantiate(hexSpawn.dSpawnHexTile);
+
+            hexBaseGo.transform.parent = this.GetComponent<GridStats>().transform.parent;
+            hexBaseGo.GetComponent<GridStats>().x = this.GetComponent<GridStats>().GetComponent<GridStats>().x;
+            hexBaseGo.GetComponent<GridStats>().y = this.GetComponent<GridStats>().GetComponent<GridStats>().y;
+            hexBaseGo.GetComponent<GridStats>().visited = this.GetComponent<GridStats>().GetComponent<GridStats>().visited;
+            hexBaseGo.GetComponent<GridStats>().basable = this.GetComponent<GridStats>().GetComponent<GridStats>().basable;
+            hexBaseGo.GetComponent<GridStats>().spawnable = this.GetComponent<GridStats>().GetComponent<GridStats>().spawnable;
+            hexBaseGo.transform.position = this.GetComponent<GridStats>().transform.position;
+            hexBaseGo.name = this.GetComponent<GridStats>().name + "(Spawn)";
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("dSpawn n'est pas affecté a dFloor");
+        }
+
+    }
 }

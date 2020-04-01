@@ -13,6 +13,7 @@ public class GridBehavior : MonoBehaviour
     public GameObject hexPrefab;
     public dFloor Floor;
     public dBase hexBase;
+    public dSpawn hexSpawn;
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
@@ -126,7 +127,8 @@ public class GridBehavior : MonoBehaviour
 
                 if (Obj && Obj.GetComponent<GridStats>().spawnable == 1 && Obj.GetComponent<GridStats>().x == localSpawnObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localSpawnObject.GetComponent<GridStats>().y)
                 {
-                    Obj.GetComponent<GridStats>().ConvertToSpawn();
+                    //Obj.GetComponent<GridStats>().ConvertToSpawn();
+                    Obj.GetComponent<GridStats>().SwitchTileToSpawn(hexSpawn);
                 }
                 if (Obj && Obj.GetComponent<GridStats>().basable == 1 && Obj.GetComponent<GridStats>().x == localBaseObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localBaseObject.GetComponent<GridStats>().y)
                 {

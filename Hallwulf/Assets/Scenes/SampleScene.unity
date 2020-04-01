@@ -330,6 +330,7 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   Floor: {fileID: 11400000, guid: 4869727cb9c35274bb45b6690d96f38a, type: 2}
   hexBase: {fileID: 11400000, guid: 098d01167777d454c9770afb3ee61e7d, type: 2}
+  hexSpawn: {fileID: 11400000, guid: a3027980ce5a92342afa7909dca4bfbe, type: 2}
   leftBottomLocation: {x: 0, y: 0, z: 0}
   baseList: []
   spawnList: []
