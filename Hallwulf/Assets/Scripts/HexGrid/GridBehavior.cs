@@ -13,7 +13,12 @@ public class GridBehavior : MonoBehaviour
     public GameObject hexPrefab;
     public dFloor Floor;
     public dBase hexBase;
+    public dRoad hexRoad;
     public dSpawn hexSpawn;
+
+    public GameObject baseObject;
+    public GameObject spawnObject;
+
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
@@ -128,11 +133,19 @@ public class GridBehavior : MonoBehaviour
                 if (Obj && Obj.GetComponent<GridStats>().spawnable == 1 && Obj.GetComponent<GridStats>().x == localSpawnObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localSpawnObject.GetComponent<GridStats>().y)
                 {
                     //Obj.GetComponent<GridStats>().ConvertToSpawn();
-                    Obj.GetComponent<GridStats>().SwitchTileToSpawn(hexSpawn);
+                    spawnObject = Obj.GetComponent<GridStats>().SwitchTileToSpawn(hexSpawn, gridArray);
+                }
+                else
+                {
+                    Obj.GetComponent<GridStats>().spawnable = 0;
                 }
                 if (Obj && Obj.GetComponent<GridStats>().basable == 1 && Obj.GetComponent<GridStats>().x == localBaseObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localBaseObject.GetComponent<GridStats>().y)
                 {
-                    Obj.GetComponent<GridStats>().SwitchTileToBase(hexBase);              
+                    baseObject = Obj.GetComponent<GridStats>().SwitchTileToBase(hexBase, gridArray);
+                }
+                else
+                {
+                    Obj.GetComponent<GridStats>().basable = 0;
                 }
             }
         //}  
@@ -150,8 +163,8 @@ public class GridBehavior : MonoBehaviour
         // Pour chaque objet on le tag a Visited = -1 sauf le start a 0
         InitialSetUp();
 
-        int x = startX;
-        int y = startY;
+        int x = spawnObject.GetComponent<GridStats>().x; 
+        int y = spawnObject.GetComponent<GridStats>().y;
         int[] testArray = new int[rows * columns];
         // Pour mon nombre d'éléments dans ma grille
         for (int step = 1; step < rows*columns; step++)
@@ -169,13 +182,13 @@ public class GridBehavior : MonoBehaviour
     void SetPath()
     {
         int step;
-        int x = endX;
-        int y = endY;
+        int x = baseObject.GetComponent<GridStats>().x; //endX;
+        int y = baseObject.GetComponent<GridStats>().y;//endY;
         List<GameObject> tempList = new List<GameObject>();
         path.Clear();
 
         // Si mon objet ciblé dans ma table d'objet Existe && si mon champ visited > 0 (if negative = Solution FOund)
-        if (gridArray[endX, endY] && gridArray[endX, endY].GetComponent<GridStats>().visited > 0) 
+        if (gridArray[x, y] && gridArray[x, y].GetComponent<GridStats>().visited > 0) 
         {
             path.Add(gridArray[x, y]);
             step = gridArray[x, y].GetComponent<GridStats>().visited - 1;
@@ -195,19 +208,22 @@ public class GridBehavior : MonoBehaviour
                 tempList.Add(gridArray[x, y - 1]);
             if (TestDirection(x, y, step, 4))
                 tempList.Add(gridArray[x -1 , y]);
-            GameObject tempObj = FindClosest(gridArray[endX, endY].transform, tempList);
+            GameObject tempObj = FindClosest(gridArray[x, y].transform, tempList);
             path.Add(tempObj);
+            var TileRenderer = tempObj.GetComponent<GridStats>().GetComponent<Renderer>();
+            TileRenderer.material.SetColor("_Color", Color.grey);
             x = tempObj.GetComponent<GridStats>().x;
             y = tempObj.GetComponent<GridStats>().y;
             tempList.Clear();
             //Debug.Log("Waiting end of path");
-        }       
+        }        
     }
 
     void TestFourDirections(int x, int y, int step)
     {
+        
         if (TestDirection(x, y, -1, 1))// UP
-            SetVisited(x, y + 1, step);
+            SetVisited(x, y + 1, step); // + UnityEngine.Random.Range(0, 10)
         if (TestDirection(x, y, -1, 2))// RIGHT
             SetVisited(x + 1, y, step);
         if (TestDirection(x, y, -1, 3))// DOWN
@@ -231,7 +247,7 @@ public class GridBehavior : MonoBehaviour
                     Obj.GetComponent<GridStats>().spawnable = 0;
             }
                 // On initialise le Start comme visité et connu
-                gridArray[startX, startY].GetComponent<GridStats>().visited = 0;
+                spawnObject.GetComponent<GridStats>().visited = 0;
         }
     }
 

@@ -9,6 +9,7 @@ public class GridStats : MonoBehaviour
     public int y = 0;
     public int basable;
     public int spawnable;
+    
 
     
 
@@ -42,7 +43,7 @@ public class GridStats : MonoBehaviour
         TileRenderer.material.SetColor("_Color", Color.red);
     }
 
-    public void SwitchTileToBase(dBase hexBase)
+    public GameObject SwitchTileToBase(dBase hexBase, GameObject[,] gridArray)
     {
         if (hexBase)
         {
@@ -56,15 +57,18 @@ public class GridStats : MonoBehaviour
             hexBaseGo.GetComponent<GridStats>().spawnable = this.GetComponent<GridStats>().GetComponent<GridStats>().spawnable;
             hexBaseGo.transform.position = this.GetComponent<GridStats>().transform.position;
             hexBaseGo.name = this.GetComponent<GridStats>().name + "(Base)";
+            gridArray[hexBaseGo.GetComponent<GridStats>().x, hexBaseGo.GetComponent<GridStats>().y] = hexBaseGo;
             Destroy(this.gameObject);
+            return hexBaseGo;
         }
         else
         {
             Debug.Log("dBase n'est pas affecté a dFloor");
+            return null;
         }
 
     }
-    public void SwitchTileToSpawn(dSpawn hexSpawn)
+    public GameObject SwitchTileToSpawn(dSpawn hexSpawn, GameObject[,] gridArray)
     {
         if (hexSpawn)
         {
@@ -78,11 +82,14 @@ public class GridStats : MonoBehaviour
             hexBaseGo.GetComponent<GridStats>().spawnable = this.GetComponent<GridStats>().GetComponent<GridStats>().spawnable;
             hexBaseGo.transform.position = this.GetComponent<GridStats>().transform.position;
             hexBaseGo.name = this.GetComponent<GridStats>().name + "(Spawn)";
+            gridArray[hexBaseGo.GetComponent<GridStats>().x, hexBaseGo.GetComponent<GridStats>().y] = hexBaseGo;
             Destroy(this.gameObject);
+            return hexBaseGo;
         }
         else
         {
             Debug.Log("dSpawn n'est pas affecté a dFloor");
+            return null;
         }
 
     }
