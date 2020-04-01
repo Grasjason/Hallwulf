@@ -3,7 +3,9 @@ guid: c9ab53ec43f536a49b767d3a47543db2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - dFloorHexTile: {fileID: 490530233579454534, guid: d07b5dc444709d04789e5d997de5a70c,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

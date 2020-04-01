@@ -12,6 +12,7 @@ public class GridBehavior : MonoBehaviour
 
     public GameObject hexPrefab;
     public dFloor Floor;
+    public dBase hexBase;
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
@@ -39,7 +40,7 @@ public class GridBehavior : MonoBehaviour
             SetBasableAndSpawnable(gridArray);
             ConvertToBaseAndSpawn();
         }            
-        else print("Assigner une hexPrefab qui servira de Grille au sol.");
+        else print("Assigner a notre GridGenerator une data dFloor.");
     }
 
     // Update is called once per frame
@@ -117,8 +118,8 @@ public class GridBehavior : MonoBehaviour
         GameObject localBaseObject = baseList[UnityEngine.Random.Range(0, baseList.Count)];
         GameObject localSpawnObject = spawnList[UnityEngine.Random.Range(0, spawnList.Count)];
 
-        for (int l = 1; l < rows * columns; l++)
-        {
+        //for (int l = 1; l < rows * columns; l++)
+        //{
             //Pour chaque objet
             foreach (GameObject Obj in gridArray)
             {
@@ -129,11 +130,12 @@ public class GridBehavior : MonoBehaviour
                 }
                 if (Obj && Obj.GetComponent<GridStats>().basable == 1 && Obj.GetComponent<GridStats>().x == localBaseObject.GetComponent<GridStats>().x && Obj.GetComponent<GridStats>().y == localBaseObject.GetComponent<GridStats>().y)
                 {
-                    Obj.GetComponent<GridStats>().ConvertToBase();
+                    Obj.GetComponent<GridStats>().SwitchTileToBase(hexBase);              
                 }
             }
-        }  
+        //}  
     }
+    
 
     void SetTileInfo(GameObject GO, int x, int z)
     {

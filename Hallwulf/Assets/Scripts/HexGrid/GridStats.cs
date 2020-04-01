@@ -10,6 +10,8 @@ public class GridStats : MonoBehaviour
     public int basable;
     public int spawnable;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +40,28 @@ public class GridStats : MonoBehaviour
 
         //Call SetColor using the shader property name "_Color" and setting the color to red
         TileRenderer.material.SetColor("_Color", Color.red);
-    }    
+    }
+
+    public void SwitchTileToBase(dBase hexBase)
+    {
+        if (hexBase)
+        {
+            GameObject hexBaseGo = Instantiate(hexBase.dBaseHexTile);
+
+            hexBaseGo.transform.parent = this.GetComponent<GridStats>().transform.parent;
+            hexBaseGo.GetComponent<GridStats>().x = this.GetComponent<GridStats>().GetComponent<GridStats>().x;
+            hexBaseGo.GetComponent<GridStats>().y = this.GetComponent<GridStats>().GetComponent<GridStats>().y;
+            hexBaseGo.GetComponent<GridStats>().visited = this.GetComponent<GridStats>().GetComponent<GridStats>().visited;
+            hexBaseGo.GetComponent<GridStats>().basable = this.GetComponent<GridStats>().GetComponent<GridStats>().basable;
+            hexBaseGo.GetComponent<GridStats>().spawnable = this.GetComponent<GridStats>().GetComponent<GridStats>().spawnable;
+            hexBaseGo.transform.position = this.GetComponent<GridStats>().transform.position;
+            hexBaseGo.name = this.GetComponent<GridStats>().name + "(Base)";
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("dBase n'est pas affecté a dFloor");
+        }
+
+    }
 }

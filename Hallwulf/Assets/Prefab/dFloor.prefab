@@ -111,3 +111,4 @@ MonoBehaviour:
   y: 0
   basable: 0
   spawnable: 0
+  hexBase: {fileID: 11400000, guid: 376ffe1a9587a534d8dd2d8ba5447986, type: 2}

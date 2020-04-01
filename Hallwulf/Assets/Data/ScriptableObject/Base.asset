@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52d0d6e25a67e3943969e4a972ac2bd1, type: 3}
-  m_Name: Data
+  m_Name: Base
   m_EditorClassIdentifier: 
-  hexBase: {fileID: 9168958986836844039, guid: 1c566870435319d48ba5a5583d0a9777, type: 3}
-  objectName: Base Camp
-  thisColor: {r: 0.20518868, g: 0.8207547, b: 0.3231243, a: 1}
+  dBaseHexTile: {fileID: 1579498914015753358, guid: a3097b1192bdd05498945f543956b521,
+    type: 3}
+  dBaseName: Base Camp
+  dBaseColor: {r: 0, g: 1, b: 1, a: 1}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/dFloor", order = 1)]
+[CreateAssetMenu(fileName = "Data", menuName = "Data/dFloor")]
 public class dFloor : ScriptableObject
 {
     public GameObject dFloorHexTile;
