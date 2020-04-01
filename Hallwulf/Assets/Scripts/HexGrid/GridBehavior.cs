@@ -11,6 +11,7 @@ public class GridBehavior : MonoBehaviour
     public int scale = 1;
 
     public GameObject hexPrefab;
+    public dFloor Floor;
     public Vector3 leftBottomLocation = new Vector3(0, 0, 0);
 
     public GameObject[,] gridArray;
@@ -32,7 +33,7 @@ public class GridBehavior : MonoBehaviour
     void Awake()
     {
         gridArray = new GameObject[columns, rows];
-        if (hexPrefab)
+        if (Floor.dFloorHexTile)
         {
             GenerateGrid();
             SetBasableAndSpawnable(gridArray);
@@ -59,7 +60,7 @@ public class GridBehavior : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                GameObject Object = Instantiate(hexPrefab);
+                GameObject Object = Instantiate(Floor.dFloorHexTile);
 
                 if (j % 2 == 0)
                 {
@@ -73,8 +74,8 @@ public class GridBehavior : MonoBehaviour
                 Object.transform.SetParent(gameObject.transform);
 
                 Object.GetComponent<GridStats>().x = i;
-                Object.GetComponent<GridStats>().y = j;                
-
+                Object.GetComponent<GridStats>().y = j;
+                Object.GetComponent<Renderer>().material.SetColor("_Color", Floor.dFloorColor);
                 gridArray[i, j] = Object;
             }
         }

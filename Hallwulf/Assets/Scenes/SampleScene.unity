@@ -327,9 +327,12 @@ MonoBehaviour:
   rows: 40
   columns: 40
   scale: 2
-  hexPrefab: {fileID: 5068774730981186919, guid: 09f97afc2574a8c4fada1c6a065cfa55,
+  hexPrefab: {fileID: 5301459833033017053, guid: 5c376679fff2ad34f9e0a8f0ccfcfccd,
     type: 3}
+  Floor: {fileID: 11400000, guid: 4869727cb9c35274bb45b6690d96f38a, type: 2}
   leftBottomLocation: {x: 0, y: 0, z: 0}
+  baseList: []
+  spawnList: []
   startX: 0
   startY: 0
   endX: 50
